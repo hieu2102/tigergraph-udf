@@ -337,5 +337,30 @@ void Maxclique::expand_dyn(Vertices R) {
     }
 }
 
+void read_graph(ListAccum <ListAccum<int> > graph, bool **&conn, int &size) {
+    std::set<int> v;
+    std::multimap<int, int> e;
+    for (int i = 0 ; i < graph.size(); i++){
+        int vi, vj;
+        vi = graph.get(i).get(0);
+        vj = graph.get(i).get(1);
+        v.insert(vi);
+        v.insert(vj);
+        e.insert(std::make_pair(vi, vj));
+    }
+    size = *v.rbegin() + 1;
+    conn = new bool *[size];
+    for (int i = 0; i < size; i++) {
+        conn[i] = new bool[size];
+        memset(conn[i], 0, size * sizeof(bool));
+    }
+    for (std::multimap<int, int>::iterator it = e.begin(); it != e.end(); it++) {
+        conn[it->first][it->second] = true;
+        conn[it->second][it->first] = true;
+    }
+
+
+}
+
 #endif
 #endif /* EXPRUTIL_HPP_ */
